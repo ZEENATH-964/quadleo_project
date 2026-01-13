@@ -26,6 +26,12 @@ final AuthService authService;
      }
     });
 
+    on<LogoutRequested>((event, emit) async {
+  await authService.logout();
+  emit(AuthInitial());
+});
+
+
     on<ForgotPasswordRequest>((event,emit)async{
       emit(AuthLoading());
       try {

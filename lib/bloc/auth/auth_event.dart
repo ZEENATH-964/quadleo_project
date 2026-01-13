@@ -24,6 +24,9 @@ class RegisterRequest extends AuthEvent {
   List<Object?>get props=>[request];
 }
 
+class LogoutRequested extends AuthEvent {}
+
+
 class ForgotPasswordRequest extends AuthEvent {
   final String email;
   ForgotPasswordRequest(this.email);

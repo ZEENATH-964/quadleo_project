@@ -23,6 +23,11 @@ final userCredencial=await auth.signInWithEmailAndPassword(
        return UserModel.fromFirebase(userCredencial.user!);
   }
 
+  Future<void> logout() async {
+  await auth.signOut();
+}
+
+
   Future<void> resetPassword(String email) async {
   await auth.sendPasswordResetEmail(email: email);
 }

@@ -22,6 +22,7 @@ Widget buildTextField({
     ),
     child: TextField(controller: controller,
     obscureText: obscure,
+     textAlignVertical: TextAlignVertical.center, 
     decoration: InputDecoration(
       border: InputBorder.none,
       hintText: hint,

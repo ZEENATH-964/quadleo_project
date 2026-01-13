@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "572241987462",
+    "project_id": "quadleo-project",
+    "storage_bucket": "quadleo-project.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:572241987462:android:37f6cabfd002b3f085ce07",
+        "android_client_info": {
+          "package_name": "com.example.quadleo_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDywjQ0zkA4MEn_n3U0_A_G8SI6DdOlJpQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

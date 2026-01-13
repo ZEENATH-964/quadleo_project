@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quadleo_project/bloc/auth/auth_event.dart';
 import 'package:quadleo_project/bloc/auth/auth_state.dart';
-import 'package:quadleo_project/data/service/service.dart';
+import 'package:quadleo_project/data/service/auth_service.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
 final AuthService authService;

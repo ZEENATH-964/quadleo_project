@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:quadleo_project/bloc/auth/auth_bloc.dart';
 import 'package:quadleo_project/bloc/auth/auth_event.dart';
+import 'package:quadleo_project/bloc/auth/auth_state.dart';
 import 'package:quadleo_project/data/model/login_model.dart';
 import 'package:quadleo_project/decoration/decoration.dart';
 import 'package:quadleo_project/view/forgot_password.dart';
@@ -22,7 +23,14 @@ class _LoginState extends State<Login> {
   bool isPasswordVisible=false;
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return BlocListener<AuthBloc, AuthState>(
+  listener: (context, state) {
+    if (state is AuthError) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(state.message)));
+    }
+  },
+   child:   Scaffold(
         appBar: AppBar(
         title: Center(child:textStyle("Login", 23, FontWeight.bold,Colors.black)),
         ),
@@ -96,7 +104,7 @@ class _LoginState extends State<Login> {
             ),
           ),
         ),
-      
+   ) 
     );
   }
 }

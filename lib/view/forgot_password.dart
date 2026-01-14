@@ -5,72 +5,106 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:quadleo_project/bloc/auth/auth_bloc.dart';
 import 'package:quadleo_project/bloc/auth/auth_event.dart';
+import 'package:quadleo_project/bloc/auth/auth_state.dart';
 import 'package:quadleo_project/decoration/decoration.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
-   ForgotPasswordPage({super.key});
+  ForgotPasswordPage({super.key});
 
   final emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return 
-    Scaffold(
-      appBar: AppBar(),
-      backgroundColor: const Color(0xffF5F7FA),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            children: [
-              Gap(40),
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthLoading) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (_) => const Center(child: CircularProgressIndicator()),
+          );
+        }
 
-              
-              textStyle("Forgot Password", 28, FontWeight.bold, Colors.black),
+        if (state is AuthSuccess) {
+          if (Navigator.canPop(context)) {
+            Navigator.pop(context); 
+          }
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Reset link sent to your email")),
+          );
+          Navigator.pop(context); 
+        }
 
-              
+        if (state is AuthError) {
+          if (Navigator.canPop(context)) {
+            Navigator.pop(context);
+          }
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
+        }
+      },
 
-              Gap(12),
-               textStyle("Enter your email and we will send you a reset link",
-                13, FontWeight.normal, Colors.black54),
-              
+      child: Scaffold(
+        appBar: AppBar(),
+        backgroundColor: const Color(0xffF5F7FA),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              children: [
+                Gap(40),
 
-             Gap(40),
+                textStyle("Forgot Password", 28, FontWeight.bold, Colors.black),
 
-              buildTextField(
-                controller: emailController,
-                hint: "Email",
-                icon: Icons.alternate_email,
-              ),
+                Gap(12),
+                textStyle(
+                  "Enter your email and we will send you a reset link",
+                  13,
+                  FontWeight.normal,
+                  Colors.black54,
+                ),
 
-              const SizedBox(height: 30),
+                Gap(40),
 
-              SizedBox(
-                width: double.infinity,
-                height: 55,
-                child: ElevatedButton(
-                  onPressed: () {
+                buildTextField(
+                  controller: emailController,
+                  hint: "Email",
+                  icon: Icons.alternate_email,
+                ),
+
+                const SizedBox(height: 30),
+
+                SizedBox(
+                  width: double.infinity,
+                  height: 55,
+                  child: ElevatedButton(
+                    onPressed: () {
                       final email = emailController.text.trim();
                       log("Button clicked: $email");
-                      context.read<AuthBloc>().add(ForgotPasswordRequest(email));
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff2563EB),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+                      context.read<AuthBloc>().add(
+                        ForgotPasswordRequest(email),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xff2563EB),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    child: textStyle(
+                      "Send Reset Link",
+                      18,
+                      FontWeight.bold,
+                      Colors.white,
                     ),
                   ),
-                  child: textStyle(
-                    "Send Reset Link",
-                    18,FontWeight.bold,Colors.white
-                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
-    
     );
   }
 }

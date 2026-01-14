@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:quadleo_project/bloc/auth/auth_bloc.dart';
 import 'package:quadleo_project/bloc/auth/auth_event.dart';
+import 'package:quadleo_project/bloc/auth/auth_state.dart';
 import 'package:quadleo_project/data/model/register_model.dart';
 import 'package:quadleo_project/decoration/decoration.dart';
 
@@ -22,7 +23,32 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return
-    Scaffold(
+    BlocListener<AuthBloc, AuthState>(
+  listener: (context, state) {
+    if (state is AuthLoading) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) =>
+             Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (state is AuthSuccess) {
+      Navigator.pop(context); // loader close
+      ScaffoldMessenger.of(context).showSnackBar(
+         SnackBar(content: Text("Registration successful. Please login")),
+      );
+      Navigator.pop(context); // back to Login
+    }
+
+    if (state is AuthError) {
+      Navigator.pop(context); // loader close
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(state.message)));
+    }
+  },
+  child:   Scaffold(
       appBar: AppBar(
         title: Center(child: textStyle("Register", 20, FontWeight.bold, Colors.black)),
       ),
@@ -94,6 +120,7 @@ class _RegisterState extends State<Register> {
           ),
         )),
       ),
+  )
     );
     
   }
